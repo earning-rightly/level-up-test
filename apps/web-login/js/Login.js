@@ -1,6 +1,10 @@
 // naver ouath part
-const WEB_IP = "http://192.168.0.12:8887/Login.html#";
-const CALLBACK_IP = "http://192.168.0.12:8887/CallBack.html";
+const WEB_IP = new URL(document.location.href);
+const pathname = WEB_IP.pathname; // url-path 부분
+const CALLBACK_IP =
+  WEB_IP.origin + // scheme와 hosts 부분
+  pathname.substring(0, pathname.lastIndexOf("/")) +
+  "/CallBack.html";
 const CLIENT_ID = "Hw7RwBFOB7UjSufSEEjy";
 
 var naver_id_login = new naver_id_login(CLIENT_ID, CALLBACK_IP);
@@ -10,10 +14,15 @@ naver_id_login.setDomain(WEB_IP);
 naver_id_login.setState(state);
 naver_id_login.setPopup();
 naver_id_login.init_naver_id_login();
+alert(CALLBACK_IP);
 
 // kakao ouath part
 Kakao.init("13cee8f0d511dff11f766fe1d031b0a1"); //발급받은 키 중 javascript키를 사용해준다.
-console.log(Kakao.isInitialized()); // sdk초기화여부판단
+// sdk초기화여부판단
+if (!Kakao.isInitialized()) {
+  alert("kakao sdk is not initialized");
+  // return;
+}
 //카카오로그인
 function kakaoLogin() {
   Kakao.Auth.login({
@@ -59,21 +68,3 @@ function kakaoLogout() {
     Kakao.Auth.setAccessToken(undefined);
   }
 }
-
-// 수정중인 부분 로그인 기능만 유지한 채로
-// function kakaoLogin() {
-//   window.Kakao.Auth.login({
-//     scope: "profile_nickname, account_email, gender",
-//     success: function (authObj) {
-//       alert("로그인 성공");
-//       console.log(authObj);
-//       // window.Kakao.API.request({
-//       //   url: "/v2/user/me",
-//       //   success: res => {
-//       //     const kakao_account = res.kako_account;
-//       //     console.log(kakao_account);
-//       //   },
-//       // });
-//     },
-//   });
-// }
