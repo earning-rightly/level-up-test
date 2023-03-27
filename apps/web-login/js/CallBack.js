@@ -1,8 +1,8 @@
 const naverOuath_ID = "Hw7RwBFOB7UjSufSEEjy";
-const callBack_URL = new URL(document.location.href);
-const index_URL = callBack_URL.origin;
+const callbackURL = new URL(document.location.href);
+const indexURL = callbackURL.origin;
 var naver_id_login = new naver_id_login(naverOuath_ID, index_URL);
-alert(index_URL);
+
 // 네이버 사용자 프로필 조회
 naver_id_login.get_naver_userprofile("naverSignInCallback()");
 // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function

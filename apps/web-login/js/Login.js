@@ -1,28 +1,30 @@
-// naver ouath part
-const WEB_IP = new URL(document.location.href);
-const pathname = WEB_IP.pathname; // url-path 부분
-const CALLBACK_IP =
-  WEB_IP.origin + // scheme와 hosts 부분
+const NAVER_CLIENT_ID = "Hw7RwBFOB7UjSufSEEjy"; // 상수는 따로 .js 파일에 넣어서 관리하자
+const KAKAO_CLIENT_ID = "13cee8f0d511dff11f766fe1d031b0a1";
+
+const indexURL = new URL(document.location.href); // 객체인데 왜? 상수처럼 전부 대문자?
+const pathname = indexURL.pathname; // url-path 부분
+const callbackURL =
+  indexURL.origin + // scheme와 hosts 부분
   pathname.substring(0, pathname.lastIndexOf("/")) +
   "/CallBack.html";
-const CLIENT_ID = "Hw7RwBFOB7UjSufSEEjy";
 
-var naver_id_login = new naver_id_login(CLIENT_ID, CALLBACK_IP);
+var naver_id_login = new naver_id_login(NAVER_CLIENT_ID, callbackURL); // 변수을 동일하게 할 필요 없다
 var state = naver_id_login.getUniqState();
+// 재새용 고
 naver_id_login.setButton("white", 2, 40);
-naver_id_login.setDomain(WEB_IP);
+naver_id_login.setDomain(indexURL);
 naver_id_login.setState(state);
 naver_id_login.setPopup();
 naver_id_login.init_naver_id_login();
-alert(CALLBACK_IP);
 
 // kakao ouath part
-Kakao.init("13cee8f0d511dff11f766fe1d031b0a1"); //발급받은 키 중 javascript키를 사용해준다.
+Kakao.init(KAKAO_CLIENT_ID); //발급받은 키 중 javascript키를 사용해준다.
 // sdk초기화여부판단
 if (!Kakao.isInitialized()) {
   alert("kakao sdk is not initialized");
   // return;
 }
+
 //카카오로그인
 function kakaoLogin() {
   Kakao.Auth.login({
@@ -65,6 +67,7 @@ function kakaoLogout() {
         console.log(error);
       },
     });
+
     Kakao.Auth.setAccessToken(undefined);
   }
 }
