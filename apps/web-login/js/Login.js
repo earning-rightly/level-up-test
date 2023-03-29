@@ -7,26 +7,18 @@ const callbackURL =
   pathname.substring(0, pathname.lastIndexOf("/")) +
   "/CallBack.html";
 
-// console.lo(button);
-
 let btn1 = document.querySelector("#naver_id_login");
 
-// 재새용 고
-
-btn1.addEventListener("click", pop1);
-console.log(btn1);
-// console.log(btn2);
-
-// btn1.addEventListener("click", pop1);
 NaverLoginInit();
+
 function NaverLoginInit() {
-  var naverIdLogin = new naver_id_login(NAVER_CLIENT_ID, callbackURL);
+  let naverIdLogin = new naver_id_login(NAVER_CLIENT_ID, callbackURL);
 
   SetNaverOauth(naverIdLogin);
   naverIdLogin.init_naver_id_login();
 }
 function SetNaverOauth(naverIdLogin) {
-  var state = naverIdLogin.getUniqState();
+  let state = naverIdLogin.getUniqState();
 
   naverIdLogin.setButton("white", 2, 40);
   naverIdLogin.setDomain(indexURL);
@@ -48,7 +40,6 @@ function pop1() {
   console.log("로그인 중");
   if (getCookie("userProfile")) {
     // window.location.href = "https://www.daum.net/";
-    console.log("work function");
     const cookieName = "userProfile";
     const cookieValue = document.cookie
       .split(";")
@@ -117,8 +108,9 @@ function kakaoLogout() {
     Kakao.Auth.setAccessToken(undefined);
   }
 }
-
+btn1.addEventListener("click", pop1);
 window.addEventListener("message", event => {
   // 이벤트를 처리하는 코드 작성
   console.log(event.data); // 전달된 데이터 출력
+  window.open("http://127.0.0.1:5500/level-up-test/apps/web-login/index.html");
 });
