@@ -1,14 +1,13 @@
-const NAVER_CLIENT_ID = "Hw7RwBFOB7UjSufSEEjy"; // 상수는 따로 .js 파일에 넣어서 관리하자
+const NAVER_CLIENT_ID = "Hw7RwBFOB7UjSufSEEjy";
 const KAKAO_CLIENT_ID = "13cee8f0d511dff11f766fe1d031b0a1";
-const indexURL = new URL(document.location.href); // 객체인데 왜? 상수처럼 전부 대문자?
+const indexURL = new URL(document.location.href);
 const pathname = indexURL.pathname; // url-path 부분
 const callbackURL =
   indexURL.origin + // scheme와 hosts 부분
   pathname.substring(0, pathname.lastIndexOf("/")) +
   "/CallBack.html";
 
-let btn1 = document.querySelector("#naver_id_login");
-
+let userProfile = {}; // Ouath를 통해 받을 정보를 저장할 객체
 NaverLoginInit();
 
 function NaverLoginInit() {
@@ -24,6 +23,23 @@ function SetNaverOauth(naverIdLogin) {
   naverIdLogin.setDomain(indexURL);
   naverIdLogin.setState(state);
   naverIdLogin.setPopup();
+  if (CheckingUserProileCookie()) {
+    MoveHomepage();
+    console.log("Movehome");
+  }
+}
+
+function CheckingUserProileCookie() {
+  console.log("로그인 중");
+  if (getCookie("userProfile")) {
+    // window.location.href = "https://www.daum.net/";
+    GetUserProfileObject();
+    console.log("find Object ");
+    return true;
+  } else {
+    console.log("erro: cookis could not be found");
+    return false;
+  }
 }
 function getCookie(name) {
   const cookies = document.cookie.split(";");
@@ -35,25 +51,17 @@ function getCookie(name) {
   }
   return null;
 }
-
-function pop1() {
-  console.log("로그인 중");
-  if (getCookie("userProfile")) {
-    // window.location.href = "https://www.daum.net/";
-    const cookieName = "userProfile";
-    const cookieValue = document.cookie
-      .split(";")
-      .find(cookie => cookie.trim().startsWith(cookieName + "="))
-      ?.split("=")[1];
-
-    // 쿠키에 저장된 userProfile 정보를 객체로 변환
-    const userProfile = JSON.parse(cookieValue);
-    console.log(userProfile);
-  } else {
-    console.log("erro: cookis could not be found");
-  }
+function GetUserProfileObject() {
+  const cookieName = "userProfile";
+  const cookieValue = document.cookie
+    .split(";")
+    .find(cookie => cookie.trim().startsWith(cookieName + "="))
+    ?.split("=")[1];
+  // 쿠키에 저장된 userProfile 정보를 객체로 변환
+  userProfile = JSON.parse(cookieValue);
 }
 
+/*카카오 로그인 ----------------- */
 // kakao ouath part
 Kakao.init(NAVER_CLIENT_ID); //발급받은 키 중 javascript키를 사용해준다.
 // sdk초기화여부판단
@@ -108,9 +116,15 @@ function kakaoLogout() {
     Kakao.Auth.setAccessToken(undefined);
   }
 }
-btn1.addEventListener("click", pop1);
-window.addEventListener("message", event => {
+
+function MoveHomepage() {
+  console.log("dddd");
+}
+window.addEventListener("message", function (event) {
   // 이벤트를 처리하는 코드 작성
+  console.log("!!!!");
   console.log(event.data); // 전달된 데이터 출력
-  window.open("http://127.0.0.1:5500/level-up-test/apps/web-login/index.html");
+  location.replace(
+    "http://127.0.0.1:5500/level-up-test/apps/web-login/index.html"
+  );
 });
