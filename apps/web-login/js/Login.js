@@ -10,6 +10,13 @@ const callbackURL =
 let userProfile = {}; // Ouath를 통해 받을 정보를 저장할 객체
 NaverLoginInit();
 
+function NaverOauthLogin() {
+  if (CheckingUserProileCookie()) {
+    // MoveHomepage();
+    AAA();
+  }
+}
+
 function NaverLoginInit() {
   let naverIdLogin = new naver_id_login(NAVER_CLIENT_ID, callbackURL);
 
@@ -23,10 +30,6 @@ function SetNaverOauth(naverIdLogin) {
   naverIdLogin.setDomain(indexURL);
   naverIdLogin.setState(state);
   naverIdLogin.setPopup();
-  if (CheckingUserProileCookie()) {
-    MoveHomepage();
-    console.log("Movehome");
-  }
 }
 
 function CheckingUserProileCookie() {
@@ -63,7 +66,7 @@ function GetUserProfileObject() {
 
 /*카카오 로그인 ----------------- */
 // kakao ouath part
-Kakao.init(NAVER_CLIENT_ID); //발급받은 키 중 javascript키를 사용해준다.
+Kakao.init(KAKAO_CLIENT_ID); //발급받은 키 중 javascript키를 사용해준다.
 // sdk초기화여부판단
 if (!Kakao.isInitialized()) {
   alert("kakao sdk is not initialized");
@@ -79,7 +82,6 @@ function kakaoLogin() {
         success: function (response) {
           console.log(response);
           alert("success login");
-          openNew(); // 세로운 창을 띄우고 싶은데 왜 안되는 걸까요? 알려 주세요
         },
         fail: function (error) {
           console.log(error);
@@ -90,14 +92,6 @@ function kakaoLogin() {
       console.log(error);
     },
   });
-}
-function openNew() {
-  windowOpen(
-    // https://developers.kakao.com/sdk/js/kakao.js 에 있는 함수를 사용하려고 하는데 오류가 나와요 ㅠㅠ
-    "https://t1.kakaocdn.net/kakao_js_sdk/v1/kakao.js",
-    "_blank",
-    "width=400,height=400"
-  );
 }
 
 //카카오로그아웃
@@ -112,7 +106,6 @@ function kakaoLogout() {
         console.log(error);
       },
     });
-
     Kakao.Auth.setAccessToken(undefined);
   }
 }
@@ -120,11 +113,11 @@ function kakaoLogout() {
 function MoveHomepage() {
   console.log("dddd");
 }
-window.addEventListener("message", function (event) {
-  // 이벤트를 처리하는 코드 작성
-  console.log("!!!!");
-  console.log(event.data); // 전달된 데이터 출력
-  location.replace(
-    "http://127.0.0.1:5500/level-up-test/apps/web-login/index.html"
-  );
-});
+// window.addEventListener("message", function (event) {
+//   // 이벤트를 처리하는 코드 작성
+//   console.log("!!!!");
+//   console.log(event.data); // 전달된 데이터 출력
+//   location.replace(
+//     "http://127.0.0.1:5500/level-up-test/apps/web-login/index.html"
+//   );
+// });
