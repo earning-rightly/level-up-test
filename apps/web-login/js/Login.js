@@ -65,6 +65,9 @@ function GetUserProfileObject() {
 }
 
 /*카카오 로그인 ----------------- */
+
+/*ㅇㅇㅇㅇ */
+// kakao ouath part
 // kakao ouath part
 Kakao.init(KAKAO_CLIENT_ID); //발급받은 키 중 javascript키를 사용해준다.
 // sdk초기화여부판단
@@ -76,12 +79,14 @@ if (!Kakao.isInitialized()) {
 //카카오로그인
 function kakaoLogin() {
   Kakao.Auth.login({
+    // this.auth.
     success: function (response) {
       Kakao.API.request({
+        //
         url: "/v2/user/me",
         success: function (response) {
           console.log(response);
-          alert("success login");
+          console.log(response.id);
         },
         fail: function (error) {
           console.log(error);
@@ -94,6 +99,21 @@ function kakaoLogin() {
   });
 }
 
+//카카오로그아웃
+function kakaoLogout() {
+  if (Kakao.Auth.getAccessToken()) {
+    Kakao.API.request({
+      url: "/v1/user/unlink",
+      success: function (response) {
+        console.log(response);
+      },
+      fail: function (error) {
+        console.log(error);
+      },
+    });
+    Kakao.Auth.setAccessToken(undefined);
+  }
+}
 //카카오로그아웃
 function kakaoLogout() {
   if (Kakao.Auth.getAccessToken()) {
