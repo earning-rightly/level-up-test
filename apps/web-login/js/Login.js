@@ -1,22 +1,19 @@
 import { NAVER_CLIENT_ID, KAKAO_CLIENT_ID } from "./constants.js";
+import { indexURL, callbackURL, pathname } from "./url_list.js";
 
 let kakaoLoginBtn = document.getElementById("kakao-login-btn");
 let kakaoLogOutBtn = document.getElementById("kakao-logout-btn");
 let naverLoginBtn = document.getElementById("naver-login-btn");
-const indexURL = new URL(document.location.href);
-const pathname = indexURL.pathname; // url-path 부분
-const callbackURL =
-  indexURL.origin + // scheme와 hosts 부분
-  pathname.substring(0, pathname.lastIndexOf("/")) +
-  "/CallBack.html";
 
 let userProfile = {}; // Ouath를 통해 받을 정보를 저장할 객체
 
-function NaverOauthLogin() {
-  naverLoginBtn.innerHTML = '  <a id="naver_id_login"></a>';
+function NaverLogin() {
+  naverLoginBtn.innerHTML = ' <a id="naver_id_login"></a> ';
   NaverLoginInit();
+
   if (CheckingUserProileCookie()) {
     // MoveHomepage();
+    console.log(userProfile);
   }
 }
 
@@ -119,4 +116,4 @@ function kakaoLogOut() {
 
 kakaoLoginBtn.addEventListener("click", kakaoLogin);
 kakaoLogOutBtn.addEventListener("click", kakaoLogOut);
-naverLoginBtn.addEventListener("click", NaverOauthLogin);
+naverLoginBtn.addEventListener("click", NaverLogin);

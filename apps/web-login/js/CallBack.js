@@ -1,16 +1,17 @@
-const NAVER_OAUTH_ID = "Hw7RwBFOB7UjSufSEEjy";
-const cookieName = "userProfile";
-const NAVER_OAUTH_SECRETE = "MaLARH3T4B";
-const callbackURL = new URL(document.location.href);
-const indexURL = callbackURL.origin;
-const pathname = callbackURL.pathname;
+import { NAVER_CLIENT_ID, NAVER_OAUTH_SECRETE } from "./constants.js";
+import { cookieName } from "./constants.js";
+import { indexURL, callbackURL, pathname } from "./url_list.js";
+
+let naverLogOutBtn = document.getElementById("naver-logout-btn");
+
+// const callbackURL = new URL(document.location.href);
+// const indexURL = callbackURL.origin;
+// const pathname = callbackURL.pathname;
 
 var userProfile = {};
-var naverIdLogin = new naver_id_login(NAVER_OAUTH_ID, callbackURL);
-
-// 네이버 사용자 프로필 조회
-
-naverIdLogin.get_naver_userprofile("naverSignInCallback()");
+var naverIdLogin = new naver_id_login(NAVER_CLIENT_ID, callbackURL);
+console.log(callbackURL);
+naverSignInCallback();
 
 function naverSignInCallback() {
   // userProfile 객체를 JSON 형식으로 변환하여 쿠키에 저장
@@ -30,9 +31,13 @@ function UserProfileInputCookies() {
     age: naverIdLogin.getProfileData("age"),
   };
 
-  document.cookie = cookieName + "=" + JSON.stringify(userProfile);
-  console.log(userProfile);
-  return true;
+  if (!userProfile) {
+    return false;
+  } else {
+    document.cookie = cookieName + "=" + JSON.stringify(userProfile);
+    console.log(userProfile);
+    return true;
+  }
 }
 
 function CloseCallbackPage() {
@@ -43,13 +48,14 @@ function CloseCallbackPage() {
       pathname.substring(0, pathname.lastIndexOf("/")) +
       "/login.html"
   );
-  // window.close();
+  window.close();
 }
 
 function LogOut() {
+  console.log("logout");
   DeleteCookie(cookieName);
   // ChangeLoginBox();
-  DelNaverToken(NAVER_OAUTH_ID, NAVER_OAUTH_SECRETE, userProfile.token);
+  DelNaverToken(NAVER_CLIENT_ID, NAVER_OAUTH_SECRETE, userProfile.token);
   // window.open(`https://nid.naver.com/nidlogin.logout`);
 
   function DeleteCookie(name) {
@@ -76,3 +82,5 @@ window.addEventListener("message", function (event) {
   if (event.data === "use Naver Oauth") {
   }
 });
+
+naverLogOutBtn.addEventListener("click", LogOut);
