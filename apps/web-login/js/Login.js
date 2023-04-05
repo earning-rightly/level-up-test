@@ -1,5 +1,7 @@
-const NAVER_CLIENT_ID = "Hw7RwBFOB7UjSufSEEjy";
-const KAKAO_CLIENT_ID = "13cee8f0d511dff11f766fe1d031b0a1";
+import { NAVER_CLIENT_ID, KAKAO_CLIENT_ID } from "./constants.js";
+
+let kakaoLoginBtn = document.getElementById("kakao-login-btn");
+let naverLoginBtn = document.getElementById("naver-login-btn");
 const indexURL = new URL(document.location.href);
 const pathname = indexURL.pathname; // url-path 부분
 const callbackURL =
@@ -8,12 +10,12 @@ const callbackURL =
   "/CallBack.html";
 
 let userProfile = {}; // Ouath를 통해 받을 정보를 저장할 객체
-NaverLoginInit();
 
 function NaverOauthLogin() {
+  naverLoginBtn.innerHTML = '  <a id="naver_id_login"></a>';
+  NaverLoginInit();
   if (CheckingUserProileCookie()) {
     // MoveHomepage();
-    AAA();
   }
 }
 
@@ -35,7 +37,6 @@ function SetNaverOauth(naverIdLogin) {
 function CheckingUserProileCookie() {
   console.log("로그인 중");
   if (getCookie("userProfile")) {
-    // window.location.href = "https://www.daum.net/";
     GetUserProfileObject();
     console.log("find Object ");
     return true;
@@ -65,9 +66,6 @@ function GetUserProfileObject() {
 }
 
 /*카카오 로그인 ----------------- */
-
-/*ㅇㅇㅇㅇ */
-// kakao ouath part
 // kakao ouath part
 Kakao.init(KAKAO_CLIENT_ID); //발급받은 키 중 javascript키를 사용해준다.
 // sdk초기화여부판단
@@ -78,20 +76,23 @@ if (!Kakao.isInitialized()) {
 
 //카카오로그인
 function kakaoLogin() {
+  let token = Kakao.Auth.getAccessToken();
+  console.log(token);
   Kakao.Auth.login({
     // this.auth.
     success: function (response) {
       Kakao.API.request({
-        //
         url: "/v2/user/me",
-        success: function (response) {
+        data: {
+          property_keys: ["kakao_account.email", "kakao_account.gender"],
+        },
+      })
+        .then(function (response) {
           console.log(response);
-          console.log(response.id);
-        },
-        fail: function (error) {
+        })
+        .catch(function (error) {
           console.log(error);
-        },
-      });
+        });
     },
     fail: function (error) {
       console.log(error);
@@ -114,30 +115,6 @@ function kakaoLogout() {
     Kakao.Auth.setAccessToken(undefined);
   }
 }
-//카카오로그아웃
-function kakaoLogout() {
-  if (Kakao.Auth.getAccessToken()) {
-    Kakao.API.request({
-      url: "/v1/user/unlink",
-      success: function (response) {
-        console.log(response);
-      },
-      fail: function (error) {
-        console.log(error);
-      },
-    });
-    Kakao.Auth.setAccessToken(undefined);
-  }
-}
 
-function MoveHomepage() {
-  console.log("dddd");
-}
-// window.addEventListener("message", function (event) {
-//   // 이벤트를 처리하는 코드 작성
-//   console.log("!!!!");
-//   console.log(event.data); // 전달된 데이터 출력
-//   location.replace(
-//     "http://127.0.0.1:5500/level-up-test/apps/web-login/index.html"
-//   );
-// });
+kakaoLoginBtn.addEventListener("click", kakaoLogin);
+naverLoginBtn.addEventListener("click", NaverOauthLogin);
