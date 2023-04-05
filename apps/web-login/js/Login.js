@@ -1,5 +1,6 @@
 import { NAVER_CLIENT_ID, KAKAO_CLIENT_ID } from "./constants.js";
 import { indexURL, callbackURL, pathname } from "./url_list.js";
+import { kakaoLogOut } from "./Logout.js";
 
 let kakaoLoginBtn = document.getElementById("kakao-login-btn");
 let kakaoLogOutBtn = document.getElementById("kakao-logout-btn");
@@ -98,22 +99,10 @@ function kakaoLogin() {
   });
 }
 
-//카카오로그아웃
-function kakaoLogOut() {
-  if (Kakao.Auth.getAccessToken()) {
-    Kakao.API.request({
-      url: "/v1/user/unlink",
-      success: function (response) {
-        console.log(response);
-      },
-      fail: function (error) {
-        console.log(error);
-      },
-    });
-    Kakao.Auth.setAccessToken(undefined);
-  }
+function LogOut() {
+  kakaoLogOut(Kakao);
 }
 
 kakaoLoginBtn.addEventListener("click", kakaoLogin);
-kakaoLogOutBtn.addEventListener("click", kakaoLogOut);
+kakaoLogOutBtn.addEventListener("click", LogOut);
 naverLoginBtn.addEventListener("click", NaverLogin);

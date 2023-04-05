@@ -1,6 +1,7 @@
 import { NAVER_CLIENT_ID, NAVER_OAUTH_SECRETE } from "./constants.js";
 import { cookieName } from "./constants.js";
 import { indexURL, callbackURL, pathname } from "./url_list.js";
+import { naverLogOut } from "./Logout.js";
 
 let naverLogOutBtn = document.getElementById("naver-logout-btn");
 
@@ -48,30 +49,6 @@ function CloseCallbackPage() {
       pathname.substring(0, pathname.lastIndexOf("/")) +
       "/login.html"
   );
-  window.close();
-}
-
-function LogOut() {
-  console.log("logout");
-  DeleteCookie(cookieName);
-  // ChangeLoginBox();
-  DelNaverToken(NAVER_CLIENT_ID, NAVER_OAUTH_SECRETE, userProfile.token);
-  // window.open(`https://nid.naver.com/nidlogin.logout`);
-
-  function DeleteCookie(name) {
-    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-    console.log("del cookies");
-  }
-}
-
-function DelNaverToken(clentID, secrete, token) {
-  const delTokenURL =
-    `https://nid.naver.com/oauth2.0/token?grant_type=delete&client_` +
-    `id=${clentID}&client_` +
-    `secret=${secrete}&access_` +
-    `token=${token}&service_provider=NAVER`;
-  location.replace(delTokenURL);
-
   // window.close();
 }
 
@@ -82,5 +59,9 @@ window.addEventListener("message", function (event) {
   if (event.data === "use Naver Oauth") {
   }
 });
+
+function LogOut() {
+  naverLogOut(userProfile);
+}
 
 naverLogOutBtn.addEventListener("click", LogOut);
