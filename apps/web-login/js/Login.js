@@ -1,6 +1,7 @@
 import { NAVER_CLIENT_ID, KAKAO_CLIENT_ID } from "./constants.js";
 
 let kakaoLoginBtn = document.getElementById("kakao-login-btn");
+let kakaoLogOutBtn = document.getElementById("kakao-logout-btn");
 let naverLoginBtn = document.getElementById("naver-login-btn");
 const indexURL = new URL(document.location.href);
 const pathname = indexURL.pathname; // url-path 부분
@@ -101,7 +102,7 @@ function kakaoLogin() {
 }
 
 //카카오로그아웃
-function kakaoLogout() {
+function kakaoLogOut() {
   if (Kakao.Auth.getAccessToken()) {
     Kakao.API.request({
       url: "/v1/user/unlink",
@@ -117,4 +118,5 @@ function kakaoLogout() {
 }
 
 kakaoLoginBtn.addEventListener("click", kakaoLogin);
+kakaoLogOutBtn.addEventListener("click", kakaoLogOut);
 naverLoginBtn.addEventListener("click", NaverOauthLogin);
