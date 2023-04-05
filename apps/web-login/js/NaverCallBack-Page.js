@@ -1,7 +1,7 @@
-import { NAVER_CLIENT_ID, NAVER_OAUTH_SECRETE } from "./constants.js";
-import { cookieName } from "./constants.js";
-import { indexURL, callbackURL, pathname } from "./url_list.js";
-import { naverLogOut } from "./Logout.js";
+import { NAVER_CLIENT_ID, NAVER_OAUTH_SECRETE } from "./moudle/constants.js";
+import { cookieName } from "./moudle/constants.js";
+import { indexURL, callbackURL, pathname } from "./moudle/url_list.js";
+import { naverLogOut } from "./moudle/Logout.js";
 
 let naverLogOutBtn = document.getElementById("naver-logout-btn");
 

@@ -1,6 +1,6 @@
-import { NAVER_CLIENT_ID, KAKAO_CLIENT_ID } from "./constants.js";
-import { indexURL, callbackURL, pathname } from "./url_list.js";
-import { kakaoLogOut } from "./Logout.js";
+import { NAVER_CLIENT_ID, KAKAO_CLIENT_ID } from "./moudle/constants.js";
+import { indexURL, callbackURL, pathname } from "./moudle/url_list.js";
+import { kakaoLogOut } from "./moudle/Logout.js";
 
 let kakaoLoginBtn = document.getElementById("kakao-login-btn");
 let kakaoLogOutBtn = document.getElementById("kakao-logout-btn");
