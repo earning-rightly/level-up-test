@@ -51,7 +51,8 @@ function CloseCallbackPage() {
       pathname.substring(0, pathname.lastIndexOf("/")) +
       "/login.html"
   );
-  // window.close();
+  window.open("http://127.0.0.1:5500/level-up-test/apps/web-login/index.html");
+  window.close();
 }
 
 function LogOut() {

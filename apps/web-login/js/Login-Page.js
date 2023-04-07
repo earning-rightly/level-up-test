@@ -8,9 +8,6 @@ let kakaoLogOutBtn = document.getElementById("kakao-logout-btn");
 let naverLoginBtn = document.getElementById("naver-login-btn");
 let userProfile = {}; // Ouath를 통해 받을 정보를 저장할 객체
 
-sessionStorage.setItem("cookieName", "userProfile");
-sessionStorage.setItem("NAVER_CLIENT_ID", "Hw7RwBFOB7UjSufSEEjy");
-
 NaverLoginInit();
 
 function NaverLogin() {
