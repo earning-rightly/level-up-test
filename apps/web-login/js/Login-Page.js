@@ -1,20 +1,24 @@
 import { NAVER_CLIENT_ID, KAKAO_CLIENT_ID } from "./moudle/constants.js";
+import { cookieName } from "./moudle/constants.js";
 import { indexURL, callbackURL, pathname } from "./moudle/url_list.js";
 import { kakaoLogOut } from "./moudle/Logout.js";
 
 let kakaoLoginBtn = document.getElementById("kakao-login-btn");
 let kakaoLogOutBtn = document.getElementById("kakao-logout-btn");
 let naverLoginBtn = document.getElementById("naver-login-btn");
-
 let userProfile = {}; // Ouath를 통해 받을 정보를 저장할 객체
 
+sessionStorage.setItem("cookieName", "userProfile");
+sessionStorage.setItem("NAVER_CLIENT_ID", "Hw7RwBFOB7UjSufSEEjy");
+
+NaverLoginInit();
+
 function NaverLogin() {
-  naverLoginBtn.innerHTML = ' <a id="naver_id_login"></a> ';
-  NaverLoginInit();
+  // naverLoginBtn.innerHTML = ' <a id="naver_id_login"></a> ';
 
   if (CheckingUserProileCookie()) {
     // MoveHomepage();
-    console.log(userProfile);
+    console.log("CheckingUserProileCooki");
   }
 }
 
@@ -35,7 +39,7 @@ function SetNaverOauth(naverIdLogin) {
 
 function CheckingUserProileCookie() {
   console.log("로그인 중");
-  if (getCookie("userProfile")) {
+  if (getCookie(cookieName)) {
     GetUserProfileObject();
     console.log("find Object ");
     return true;
@@ -55,13 +59,13 @@ function getCookie(name) {
   return null;
 }
 function GetUserProfileObject() {
-  const cookieName = "userProfile";
   const cookieValue = document.cookie
     .split(";")
     .find(cookie => cookie.trim().startsWith(cookieName + "="))
     ?.split("=")[1];
   // 쿠키에 저장된 userProfile 정보를 객체로 변환
   userProfile = JSON.parse(cookieValue);
+  console.log("GetUserProfileObject", userProfile);
 }
 
 /*카카오 로그인 ----------------- */
@@ -106,3 +110,11 @@ function LogOut() {
 kakaoLoginBtn.addEventListener("click", kakaoLogin);
 kakaoLogOutBtn.addEventListener("click", LogOut);
 naverLoginBtn.addEventListener("click", NaverLogin);
+window.addEventListener("message", function (event) {
+  // 이벤트를 처리하는 코드 작성
+
+  console.log(event.data); // 전달된 데이터 출력
+  if (event.data === "use Naver Oauth") {
+    console.log("if문");
+  }
+});
